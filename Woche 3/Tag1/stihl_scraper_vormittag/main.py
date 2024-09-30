@@ -1,13 +1,31 @@
 import controller
-import model
+import db
 
 if __name__ == "__main__":
     # 0. Erstmal DB initialisieren
-    model.initialize_db()
-    # 1. Alle Produktkategorien scrapen
-    # controller aufrufen und produktkategorien scrapen
-    produkt_categories = controller.scrape_product_categories()
+    db.initialize_db()
 
-    # 2. Allgemeine Produktdetails zu jedem Produkt scrapen
-    # controller aufrufen und alle Produkte scrapen
-    controller.scrape_products(produkt_categories)
+    while True:
+        user_input = input(
+            "\nWelchen Befehl willst ausführen (scrape oder retrieve)?\n"
+        )
+
+        if user_input == "scrape":
+            # Webscraper laufen lassen
+            controller.scrape_new_products()
+        elif user_input == "retrieve":
+            # Daten von DB auslesen Befehl
+            controller.retrieve_data()
+        else:
+            print("Keine gültige Eingabe...")
+
+
+# What now? - Potentielle Aufgaben für den Nachmittag
+# 1. Daten in Pandas Dataframe überführen
+# 2. Daten als CSV ausgeben
+# -> model funktion: Daten auslesen -> view funktion: write_data_in_csv
+
+# 3. Nur Produkte einer Kategorie heraussuchen
+# 4. Produkte nach Filtern heraussuchen
+# 5. DB - Update
+# 6. DB - Delete
