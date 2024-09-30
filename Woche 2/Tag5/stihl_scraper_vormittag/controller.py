@@ -36,5 +36,6 @@ def scrape_products(product_categories: list[model.ProductCategory]) -> None:
             # 3. model aufrufen - extrahiere produktdetails
             product_details = model.extract_product_details(soup)
             # 4. view: produkte mit details darstellen
+            view.visualize_products(product_details)
         else:
             print("No valid URL found for Product Category:", product_category.category)

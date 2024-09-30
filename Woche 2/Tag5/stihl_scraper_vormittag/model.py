@@ -1,10 +1,10 @@
+import re
 from dataclasses import dataclass
 from typing import Optional
 
 from bs4 import BeautifulSoup
 from sqlmodel import Field, SQLModel, create_engine, select
 
-# TODO: Database anbinden
 engine = None
 
 
@@ -64,7 +64,6 @@ class Product:
     price: float
     short_description: str
     available: bool
-    review: float
 
 
 def extract_product_details(soup: BeautifulSoup) -> list[dict]:
@@ -84,8 +83,11 @@ def extract_product_details(soup: BeautifulSoup) -> list[dict]:
         # produktname
         name = product.find("span", class_="tile_product-standard__title-inner").text
         # preis
-        price = product.find("span", attrs={"data-test-id": "product-buy-price"}).text
-        print(price)  # TODO: konvertiere zu float
+        price_string = product.find(
+            "span", attrs={"data-test-id": "product-buy-price"}
+        ).text
+        price_extracted = re.search(r"\d+,\d{0,2}", price_string).group(0)
+        price = float(price_extracted.replace(",", "."))
 
         # short description
         short_description = product.find(
@@ -96,16 +98,17 @@ def extract_product_details(soup: BeautifulSoup) -> list[dict]:
             product.find("div", class_="tile_product-standard__status").text
             == "Auf Lager"
         )
-        # bewertung
-        tile = product.find("div", class_="tile_product-standard__title")
-        bv_container = tile.find(
-            "div", class_="bv_main_container bv_hover bv_inline_rating_container_left"
+
+        # Produktklasse erstellen
+        product = Product(
+            name=name,
+            price=price,
+            short_description=short_description,
+            available=available,
         )
 
-        review = None
-        print(review)
-        # TODO: Produktklasse erstellen
-        # TODO: product_details append
+        # product_details append
+        product_details.append(product)
 
     # returns list of product details: {'product': 'product_name', 'price': 'product_price', ...}
     return product_details
