@@ -2,7 +2,7 @@ import re
 from dataclasses import dataclass
 
 from bs4 import BeautifulSoup
-from db import create_products
+from db import Product, create_products
 
 
 @dataclass
@@ -31,15 +31,7 @@ def extract_product_categories(soup: BeautifulSoup) -> list[ProductCategory]:
     return product_categories
 
 
-@dataclass
-class Product:
-    name: str
-    price: float
-    short_description: str
-    available: bool
-
-
-def extract_product_details(soup: BeautifulSoup) -> list[dict]:
+def extract_product_details(soup: BeautifulSoup) -> bool:
     # webscraping magic
 
     # 1. Auf wichtiges Element referenzieren
@@ -80,6 +72,6 @@ def extract_product_details(soup: BeautifulSoup) -> list[dict]:
         product_details.append(product)
 
     # CREATE - Operation in DB
-    create_products(products)
+    create_products(product_details)
     # returns list of product details: {'product': 'product_name', 'price': 'product_price', ...}
-    return product_details
+    return True

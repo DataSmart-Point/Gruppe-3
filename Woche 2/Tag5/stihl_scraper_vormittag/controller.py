@@ -24,7 +24,7 @@ def scrape_product_categories() -> list[model.ProductCategory]:
         raise Exception("Request failed, URL does not exist!")
 
 
-def scrape_products(product_categories: list[model.ProductCategory]) -> None:
+def scrape_products(product_categories: list[model.ProductCategory]) -> bool:
     for product_category in product_categories:
         # 1. request auf die dedizierte produktkategorie
         full_url = urljoin(BASE_URL, product_category.path)
@@ -34,8 +34,27 @@ def scrape_products(product_categories: list[model.ProductCategory]) -> None:
             # 2. soup erstellen
             soup = BeautifulSoup(response.text, "html.parser")
             # 3. model aufrufen - extrahiere produktdetails
-            product_details = model.extract_product_details(soup)
-            # 4. view: produkte mit details darstellen
-            view.visualize_products(product_details)
+            success = model.extract_product_details(soup)
+            # 4. return an main: produkte erfolgreich in DB gespeichert
+            if success:
+                print(
+                    "Daten wurden in DB gespeichert for folgende Kategorie:",
+                    product_category.category,
+                )
         else:
             print("No valid URL found for Product Category:", product_category.category)
+            return False
+
+
+def scrape_new_products():
+    # 1. Alle Produktkategorien scrapen
+    product_categories = scrape_product_categories()
+    # 2. Allgemeine Produktdetails zu jedem Produkt scrapen
+    scrape_products(product_categories=product_categories)
+
+
+def retrieve_data():
+    # 1. Geht ins Model und fragt daten an
+    products = model.get_data()
+    # 2. In View visualisieren
+    view.visualize_products(products)
