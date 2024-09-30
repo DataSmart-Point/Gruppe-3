@@ -23,11 +23,9 @@ if __name__ == "__main__":
 # What now? - Potentielle Aufgaben für den Nachmittag
 # 1. Daten in Pandas Dataframe überführen
 # 2. Daten als CSV ausgeben
+# -> model funktion: Daten auslesen -> view funktion: write_data_in_csv
+
 # 3. Nur Produkte einer Kategorie heraussuchen
 # 4. Produkte nach Filtern heraussuchen
 # 5. DB - Update
 # 6. DB - Delete
-# 7. DB erweitern
-#   - Historie von Produktdaten
-#   - Created Date erstellen
-#   - Mehr Datenpunkte scrapen
