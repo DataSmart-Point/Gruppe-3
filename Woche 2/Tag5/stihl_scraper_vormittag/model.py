@@ -1,8 +1,9 @@
 import re
 from dataclasses import dataclass
 
+import db
 from bs4 import BeautifulSoup
-from db import Product, create_products
+from db import Product
 
 
 @dataclass
@@ -72,6 +73,12 @@ def extract_product_details(soup: BeautifulSoup) -> bool:
         product_details.append(product)
 
     # CREATE - Operation in DB
-    create_products(product_details)
+    db.create_products(product_details)
     # returns list of product details: {'product': 'product_name', 'price': 'product_price', ...}
     return True
+
+
+def get_data() -> list[Product]:
+    # Fragt DB nach allen Produkteinträgen
+    products = db.read_data()
+    return products
