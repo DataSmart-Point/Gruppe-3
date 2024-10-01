@@ -58,19 +58,24 @@ class Item(BaseModel):
 item1 = Item(id=1, value="item1", is_active=True)
 item2 = Item(id=2, value="item2", is_active=None)
 
-advanced_items = [item1, item2]
+advanced_items = {f"{item1.id}": item1, f"{item2.id}": item2}
 
 
 @app.post("/items")
 def create_item(new_item: Item):
     # items object muss geupdatet werden
-    advanced_items.append(new_item)
+    advanced_items[new_item.id] = new_item
     return "New Item Created!"
 
 
 @app.get("/advanced_items")
 def get_advanced_items():
     return advanced_items
+
+
+# TODOs:
+# PUT request
+# DELETE request
 
 
 if __name__ == "__main__":
