@@ -1,7 +1,7 @@
 from typing import Union
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 app = FastAPI()  # ertellt einen virtuellen Server
@@ -24,9 +24,9 @@ items = {"1": "item1", "2": "item2", "3": "item3"}
 @app.get("/items/{item_id}")
 def get_item(item_id):
     if item_id in items:
-        return {"Your Item": items[q]}
+        return {"Your Item": items[item_id]}
     else:
-        return "No item found"
+        raise HTTPException(status_code=404, detail="Item not found")
 
 
 @app.get("/items")
@@ -35,7 +35,7 @@ def filter_items(q: Union[str, None] = None):
         if q in items:
             return {"Your Item": items[q]}
         else:
-            return "No item found"
+            raise HTTPException(status_code=404, detail="Item not found")
     else:
         return items
 
