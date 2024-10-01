@@ -18,6 +18,28 @@ def get_test():
     return {"Hi": "I'm a test object"}
 
 
+items = {"1": "item1", "2": "item2", "3": "item3"}
+
+
+@app.get("/items/{item_id}")
+def get_item(item_id):
+    if item_id in items:
+        return {"Your Item": items[q]}
+    else:
+        return "No item found"
+
+
+@app.get("/items")
+def filter_items(q: Union[str, None] = None):
+    if q is not None:
+        if q in items:
+            return {"Your Item": items[q]}
+        else:
+            return "No item found"
+    else:
+        return items
+
+
 if __name__ == "__main__":
     # Wenn wir reload=True setzen, müssen wir als Argument für den Server folgende Form nutzen: "dateiname:name_des_servers"
     uvicorn.run("fastapi_intro:app", reload=True)  # Aktiviert den Server
