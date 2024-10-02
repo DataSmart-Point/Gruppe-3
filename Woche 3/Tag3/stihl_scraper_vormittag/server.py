@@ -6,6 +6,12 @@ from mvc import controller
 app = FastAPI()
 
 
+@app.on_event("startup")
+def startup():
+    # DB initialisieren
+    db.initialize_db()
+
+
 # Routen definieren
 # 1. scrapen
 @app.get("/scrape")
@@ -16,29 +22,12 @@ def scrape_data():
 # 2. daten wiedergeben
 @app.get("/data")
 def get_all_data():
-    data = controller.retrieve_data()
+    template = controller.retrieve_data()
+    return template
 
 
 if __name__ == "__main__":
-    # 0. Erstmal DB initialisieren
-    db.initialize_db()
-
     uvicorn.run("server:app", reload=True)
-
-    # while True:
-    #     user_input = input(
-    #         "\nWelchen Befehl willst ausführen (scrape oder retrieve)?\n"
-    #     )
-
-    #     if user_input == "scrape":
-    #         # Webscraper laufen lassen
-    #         controller.scrape_new_products()
-    #     elif user_input == "retrieve":
-    #         # Daten von DB auslesen Befehl
-    #         controller.retrieve_data()
-    #     else:
-    #         print("Keine gültige Eingabe...")
-
 
 # What now? - Potentielle Aufgaben für den Nachmittag
 # 1. Daten in Pandas Dataframe überführen

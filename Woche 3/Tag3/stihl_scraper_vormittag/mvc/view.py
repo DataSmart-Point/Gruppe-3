@@ -12,4 +12,11 @@ def create_html_template(products: list[Product]) -> str:
 
     for product in products:
         # füge tags zu einem HTML template hinzu
-        pass
+        availability_for_template = (
+            "Auf Lager" if product.available else "Nicht auf Lager"
+        )
+        single_product_html = f"<div><h2>{product.name}</h2><p>{product.price}€</p><p>{product.short_description}</p><p>{availability_for_template}</p></div>"
+        html.append(single_product_html)
+
+    html_template = "".join(html)
+    return html_template

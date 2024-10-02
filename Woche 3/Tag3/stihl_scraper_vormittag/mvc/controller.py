@@ -52,8 +52,9 @@ def scrape_new_products():
     scrape_products(product_categories=product_categories)
 
 
-def retrieve_data():
+def retrieve_data() -> str:
     # 1. Geht ins Model und fragt daten an
     products = model.get_data()
     # 2. In View visualisieren
-    view.visualize_products(products)
+    html_template = view.create_html_template(products)
+    return html_template

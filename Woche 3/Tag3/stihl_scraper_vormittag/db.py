@@ -11,12 +11,11 @@ class Product(SQLModel, table=True):
     available: bool
 
 
-engine = None
+engine = create_engine("sqlite:///./stihl-products.db")
 
 
 def initialize_db():
     global engine
-    engine = create_engine("sqlite:///./stihl-products.db")
     SQLModel.metadata.create_all(engine)
 
 
