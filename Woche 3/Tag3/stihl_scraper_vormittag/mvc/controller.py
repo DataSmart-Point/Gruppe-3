@@ -1,9 +1,8 @@
 from urllib.parse import urljoin
 
-import model
 import requests
-import view
 from bs4 import BeautifulSoup
+from mvc import model, view
 
 BASE_URL = "https://www.stihl.de/de/"
 

@@ -1,5 +1,5 @@
-import controller
 import db
+from mvc import controller
 
 if __name__ == "__main__":
     # 0. Erstmal DB initialisieren
