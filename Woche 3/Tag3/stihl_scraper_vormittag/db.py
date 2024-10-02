@@ -11,12 +11,23 @@ class Product(SQLModel, table=True):
     available: bool
 
 
+class User(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    user_name: str
+    password: str
+
+
 engine = create_engine("sqlite:///./stihl-products.db")
 
 
 def initialize_db():
     global engine
     SQLModel.metadata.create_all(engine)
+
+
+def create_user(username: str, password: str):
+    # TODO: hier können
+    pass
 
 
 def product_exists(session: Session, name: int) -> Product:
